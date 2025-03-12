@@ -1,17 +1,24 @@
 import logo from './logo.svg';
-import ComponentAlpha from './components/ComponentAlpha';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import InventoryView from './components/InventoryView';
+import AddItemForm from './components/AddItemForm';
+import AddCategoryForm from './components/AddCategoryForm';
 import './App.css';
 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Welcome to my first React app!!!</h1>
-        <p>This is my first modification of millions.</p>
-        <ComponentAlpha />
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<InventoryView />} />
+          <Route path="/add-item" element={<AddItemForm />} />
+          <Route path="/add-category" element={<AddCategoryForm />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
