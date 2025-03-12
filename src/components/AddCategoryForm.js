@@ -1,7 +1,7 @@
 import React from 'react';
 
-function AddItemForm() {
-    return <div>Add Item Form</div>;
+function AddCategoryForm() {
+    return <div>Add Category Form</div>;
 }
 
-export default AddItemForm;
+export default AddCategoryForm;
