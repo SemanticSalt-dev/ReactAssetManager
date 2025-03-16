@@ -1,0 +1,12 @@
+.inventory-container {
+    padding: 20px;
+}
+
+.item-container {
+    margin-bottom: 15px;
+}
+
+.item-container ul {
+    list-style: none;
+    padding: 0;
+}
