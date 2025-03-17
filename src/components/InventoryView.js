@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 import Item from './Item';
 import './styles/InventoryView.css';
 
-function InventoryView() {
-    const [inventory, setInventory] = useState([
-        { id: 1, name: 'Laptop', category: 'Electronics', quantity: 1 },
-        { id: 2, name: 'Secretlab Titan Chair', category: 'Furniture', quantity: 1 },
-        { id: 3, name: 'Adjustable Height Desk', category: 'Furniture', quantity: 1 }
-    ]);
+function InventoryView({ inventory }) {
+    
 
     return (
     <div className="inventory-container">

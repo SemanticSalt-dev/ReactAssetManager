@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import './styles/AddItemForm.css';
 
-function AddItemForm() {
+function AddItemForm({ addItem }) {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
     const [quantity, setQuantity] = useState('1');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form Submitted:', { name, category, quantity });
+        addItem({ name, category, quantity });
         setName('');
         setCategory('');
         setQuantity(1);
