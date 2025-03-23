@@ -10,21 +10,34 @@ import './App.css';
 
 
 function App() {
+  const [categories, setCategories] = useState(() => {
+    const storedCategories = localStorage.getItem('categories');
+    return storedCategories ? JSON.parse(storedCategories) : [
+      { id: 1, name: 'Electronics' },
+      { id: 2, name:'Furniture' }
+    ];
+  });
+
   const [inventory, setInventory] = useState(() => {
     const storedInventory = localStorage.getItem('inventory');
     return storedInventory ? JSON.parse(storedInventory) : [
-      { id: 1, name: 'Laptop', category: 'Electronics', quantity: 1 },
-      { id: 2, name: 'Secretlab Titan Chair', category: 'Furniture', quantity: 1 },
-      { id: 3, name: 'Adjustable Height Desk', category: 'Furniture', quantity: 1 }
+      { id: 1, name: 'Laptop', categoryId: 1, quantity: 1 },
+      { id: 2, name: 'Secretlab Titan Chair', categoryId: 2, quantity: 1 },
+      { id: 3, name: 'Adjustable Height Desk', categoryId: 2, quantity: 1 }
     ];
   });
 
   useEffect(() => {
     localStorage.setItem('inventory', JSON.stringify(inventory));
-  }, [inventory]);
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }, [inventory, categories]);
 
   const addItem = (newItem) => {
     setInventory([...inventory, { ...newItem, id: Date.now() }]);
+  };
+
+  const addCategory = (newCategory) => {
+    setCategories([...categories, { ...newCategory, id: Date.now() }]);
   };
 
   return (
@@ -32,9 +45,9 @@ function App() {
       <div className="App">
         <NavBar />
         <Routes>
-          <Route path="/" element={<InventoryView inventory={inventory} />} />
-          <Route path="/add-item" element={<AddItemForm addItem={addItem} />} />
-          <Route path="/add-category" element={<AddCategoryForm />} />
+          <Route path="/" element={<InventoryView inventory={inventory} categories={categories} />} />
+          <Route path="/add-item" element={<AddItemForm addItem={addItem} categories={categories} />} />
+          <Route path="/add-category" element={<AddCategoryForm addCategory={addCategory} />} />
         </Routes>
       </div>
     </Router>

@@ -3,7 +3,14 @@
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+}
+
+.category-dropdown {
+    width: 320px;
+    padding: 10px;
+    font-size: 16px;
+    height: 40px;
 }
 
 label {
@@ -13,6 +20,7 @@ label {
 
 input[type="text"],
 input[type="number"] {
+    font-size: 16px;
     width: 300px;
     padding: 8px;
     border: 1px solid #ccc;
@@ -30,4 +38,5 @@ button[type="submit"] {
 
 button[type="submit"] {
     background-color: #0056b3;
+    font-size: 16px;
 }

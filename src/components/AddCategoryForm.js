@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './styles/AddCategoryForm.css';
 
-function AddCategoryForm() {
+function AddCategoryForm({ addCategory }) {
     const [categoryName, setCategoryName] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        addCategory({ name: categoryName });
         console.log('Category Submitted:', categoryName);
         setCategoryName('');
     };

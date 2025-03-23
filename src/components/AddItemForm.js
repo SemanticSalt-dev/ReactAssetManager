@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import './styles/AddItemForm.css';
 
-function AddItemForm({ addItem }) {
+function AddItemForm({ addItem, categories }) {
+    console.log(categories);
     const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
+    const [categoryId, setCategoryId] = useState(categories[0].id);
     const [quantity, setQuantity] = useState('1');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        addItem({ name, category, quantity });
+        addItem({ name, categoryId, quantity });
         setName('');
-        setCategory('');
         setQuantity(1);
     };
 
@@ -28,13 +28,19 @@ function AddItemForm({ addItem }) {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="category">Category:</label>
-                    <input
-                      type="text"
-                      id="category"
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                    />
+                    <label htmlFor="categoryId">Category:</label>
+                    <select
+                      id="categoryId"
+                      value={categoryId}
+                      onChange={(e) => setCategoryId(parseInt(e.target.value))}
+                      className="category-dropdown"
+                    >
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                            {category.name}
+                        </option>
+                      ))}
+                    </select>
                 </div>
                 <div className="form-group">
                     <label htmlFor="quantity">Quantity:</label>

@@ -3,7 +3,7 @@
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
 }
 
 label {
@@ -16,6 +16,7 @@ input[type="text"] {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    margin-bottom: 16px;
 }
 
 button[type="submit"] {
