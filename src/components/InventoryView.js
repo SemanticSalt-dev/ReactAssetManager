@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Item from './Item';
 import './styles/InventoryView.css';
 
-function InventoryView({ inventory, categories }) {
+function InventoryView({ inventory, categories, deleteItem }) {
     
 
     return (
@@ -11,7 +11,14 @@ function InventoryView({ inventory, categories }) {
         <ul className="inventory-list">
             {inventory.map((item) => {
                 const foundCategory = categories.find((cat) => cat.id === item.categoryId);
-                return <Item key={item.id} item={item} category={foundCategory ? foundCategory.name : 'Unknown'} />;
+                return (
+                    <Item 
+                      key={item.id}
+                      item={item}
+                      category={foundCategory ? foundCategory.name : 'Unknown'}
+                      deleteItem={deleteItem}
+                    />
+                );
             })}
         </ul>
     </div>

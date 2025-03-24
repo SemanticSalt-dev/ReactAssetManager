@@ -31,15 +31,6 @@ function AddItemForm({ addItem, categories }) {
         setName('');
         setQuantity(1);
         setErrors({});
-        toast.success('Item added successfully!', {
-            position: 'bottom-center',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
     };
 
     return (

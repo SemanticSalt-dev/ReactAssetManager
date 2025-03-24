@@ -1,7 +1,8 @@
 import logo from './logo.svg';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NavBar from './components/NavBar';
 import InventoryView from './components/InventoryView';
 import AddItemForm from './components/AddItemForm';
@@ -35,10 +36,17 @@ function App() {
 
   const addItem = (newItem) => {
     setInventory([...inventory, { ...newItem, id: Date.now() }]);
+    toast.success('Item added successfully!');
   };
 
   const addCategory = (newCategory) => {
     setCategories([...categories, { ...newCategory, id: Date.now() }]);
+    toast.success('Category added successfully!');
+  };
+
+  const deleteItem = (itemId) => {
+    setInventory(inventory.filter((item) => item.id !== itemId));
+    toast.success('Item deleted successfully!')
   };
 
   return (
@@ -46,9 +54,18 @@ function App() {
       <div className="App">
         <NavBar />
         <Routes>
-          <Route path="/" element={<InventoryView inventory={inventory} categories={categories} />} />
-          <Route path="/add-item" element={<AddItemForm addItem={addItem} categories={categories} />} />
-          <Route path="/add-category" element={<AddCategoryForm addCategory={addCategory} />} />
+          <Route
+            path="/"
+            element={<InventoryView inventory={inventory} categories={categories} deleteItem={deleteItem} />}
+          />
+          <Route
+            path="/add-item"
+            element={<AddItemForm addItem={addItem} categories={categories} />}
+          />
+          <Route
+            path="/add-category"
+            element={<AddCategoryForm addCategory={addCategory} />}
+          />
         </Routes>
         <ToastContainer />
       </div>

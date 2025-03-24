@@ -19,15 +19,6 @@ function AddCategoryForm({ addCategory }) {
         console.log('Category Submitted:', categoryName);
         setCategoryName('');
         setError('');
-        toast.success('Category added successfully!', {
-            position: 'bottom-center',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
     };
     
     return (
