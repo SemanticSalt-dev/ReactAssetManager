@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import NavBar from './components/NavBar';
 import InventoryView from './components/InventoryView';
 import AddItemForm from './components/AddItemForm';
@@ -49,6 +50,7 @@ function App() {
           <Route path="/add-item" element={<AddItemForm addItem={addItem} categories={categories} />} />
           <Route path="/add-category" element={<AddCategoryForm addCategory={addCategory} />} />
         </Routes>
+        <ToastContainer />
       </div>
     </Router>
   );

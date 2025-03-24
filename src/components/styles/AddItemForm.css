@@ -13,6 +13,12 @@
     height: 40px;
 }
 
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
 label {
     display: block;
     margin-bottom: 5px;

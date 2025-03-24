@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './styles/AddItemForm.css';
 
 function AddItemForm({ addItem, categories }) {
@@ -6,12 +8,38 @@ function AddItemForm({ addItem, categories }) {
     const [name, setName] = useState('');
     const [categoryId, setCategoryId] = useState(categories[0].id);
     const [quantity, setQuantity] = useState('1');
+    const [errors, setErrors] = useState({});
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const validationErrors = {};
+
+        if (!name.trim()) {
+            validationErrors.name = 'Item name is required';
+        }
+
+        if (quantity < 1) {
+            validationErrors.quantity = 'Quantity must be at least 1';
+        }
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
         addItem({ name, categoryId, quantity });
         setName('');
         setQuantity(1);
+        setErrors({});
+        toast.success('Item added successfully!', {
+            position: 'bottom-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
     };
 
     return (
@@ -26,6 +54,7 @@ function AddItemForm({ addItem, categories }) {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
+                    {errors.name && <p className="error-message">{errors.name}</p>}
                 </div>
                 <div className="form-group">
                     <label htmlFor="categoryId">Category:</label>
@@ -50,6 +79,7 @@ function AddItemForm({ addItem, categories }) {
                       value={quantity}
                       onChange={(e) => setQuantity(parseInt(e.target.value))}
                     />
+                    {errors.quantity && <p className="error-message">{errors.quantity}</p>}
                 </div>
                 <button type="submit" >Add Item</button>
             </form>
