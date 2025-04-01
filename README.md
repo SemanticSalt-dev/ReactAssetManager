@@ -1,70 +1,106 @@
-# Getting Started with Create React App
+# Inventory Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React based application for managing personal inventory. It allows users to add items and categories, and view/delete inventory. Future development includes database integration, user authentication, and enhanced search/filtering.
 
-## Available Scripts
+This application was developed with a strong commitment to understanding each line of code. All code was hand-typed, and extensive research and questioning ensured complete comprehension.
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+-   [Features](#features)
+-   [Technologies Used](#technologies-used)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Folder Structure](#folder-structure)
+-   [Future Enhancements](#future-enhancements)
+-   [Author](#author)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features <a name="features"></a>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+-   Add and view inventory items.
+-   Categorize items for better organization.
+-   User-friendly interface with material-UI.
+-   Form validation to ensure data integrity.
+-   Local storage for data persistence.
+-   Clear notifications for user feedback.
 
-### `npm test`
+## Technologies Used <a name="technologies-used"></a>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-  React
+-  React Router DOM
+-  Material UI (@mui/material)
+-  React Toastify (for notifications)
+-  JavaScript (ES6+)
+-  CSS
 
-### `npm run build`
+## Installation <a name="installation"></a>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1.  Clone the repository.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    ```bash
+    git clone <your-repository-url>
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2.  Navigate to the project directory.
 
-### `npm run eject`
+    ```bash
+    cd <your-project-directory>
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3.  Install Dependencies.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    ```bash
+    npm install
+    ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Usage <a name="usage"></a>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1.  Start the development server.
 
-## Learn More
+    ```bash
+    npm start
+    ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2.  Open your browser and navigate to `http://localhost:3000` (or the address shown in your terminal).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+-   **Adding Items:** Go to the "Add Item" page to add new inventory items.
+-   **Adding Categories:** Go to the "Add Category" page to create new categories.
+-   **Viewing Inventory:** The main page ("/") displays the current inventory.
+-   **Deleting Items:** Click the "Delete" button next to an item to remove it.
 
-### Code Splitting
+## Folder Structure <a name="folder-structure"></a>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+src/
+├── components/
+│   ├── AddCategoryForm.js // Form for adding new categories.
+│   ├── AddItemForm.js    // Form for adding new inventory items.
+│   ├── InventoryView.js // Displays the list of inventory items.
+│   ├── NavBar.js       // Navigation bar component.
+│   └── styles/        // CSS styles for components.
+│       ├── AddCategoryForm.css
+│       ├── AddItemForm.css
+│       ├── InventoryView.css
+│       └── NavBar.css
+├── App.js      // Main application component with routing.
+├── index.js    // Entry point of the application.
+└── ... (other files)
 
-### Analyzing the Bundle Size
+-   `components/`: Contains reusable React components.
+-   `styles/`: Contains CSS files for component styling.
+-   `App.js`: The main application component, sets up routing.
+-   index.js: The entry point of the React application.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Future Enhancements <a name="future-enhancements"></a>
 
-### Making a Progressive Web App
+-   Implement item editing functionality.
+-   Add user authentication (e.g., Google Sign-In).
+-   Implement filtering and searching of inventory.
+-   Connect to a backend database (e.g., PostgreSQL).
+-   Add more detailed item information (e.g., description, images).
+-   Improve UI/UX with additional Material UI components.
+-   Unit testing.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Author <a name="author"></a>
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Matthew Jenkins
+[Contact me via email](mailto:mjenkins87@live.com)
+[SemanticSalt-dev](https://github.com/SemanticSalt-dev)

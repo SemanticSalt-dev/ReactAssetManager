@@ -1,12 +1,14 @@
-.inventory-container {
-    padding: 20px;
+.inventory-paper {
+    padding: 24px;
+    margin: 24px;
+    max-width: 800px;
+    margin: 24px auto;
 }
 
-.item-container {
-    margin-bottom: 15px;
-}
-
-.item-container ul {
-    list-style: none;
-    padding: 0;
+.inventory-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding: 16px 0;
 }

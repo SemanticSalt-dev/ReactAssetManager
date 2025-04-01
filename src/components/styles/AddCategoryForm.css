@@ -1,39 +1,14 @@
-.add-category-form-container {
-    padding: 20px;
+.add-category-paper {
+    padding: 24px;
+    margin: 24px auto;
+    max-width: 400px;
 }
 
-.form-group {
-    margin-bottom: 16px;
+.add-category-form {
+    display: flex;
+    flex-direction: column;
 }
 
-.error-message {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-input[type="text"] {
-    width: 300px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 16px;
-}
-
-button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button[type="submit"] {
-    background-color: #0056b3;
+.add-category-button {
+    margin-top: 16px;
 }

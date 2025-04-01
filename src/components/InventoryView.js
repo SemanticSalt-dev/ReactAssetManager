@@ -1,27 +1,38 @@
 import React, { useState } from 'react';
-import Item from './Item';
+import { List, ListItem, ListItemText, Button, Paper, Typography } from '@mui/material';
 import './styles/InventoryView.css';
 
 function InventoryView({ inventory, categories, deleteItem }) {
-    
-
     return (
-    <div className="inventory-container">
-        <h2>Inventory</h2>
-        <ul className="inventory-list">
-            {inventory.map((item) => {
-                const foundCategory = categories.find((cat) => cat.id === item.categoryId);
-                return (
-                    <Item 
-                      key={item.id}
-                      item={item}
-                      category={foundCategory ? foundCategory.name : 'Unknown'}
-                      deleteItem={deleteItem}
-                    />
-                );
-            })}
-        </ul>
-    </div>
+        <Paper elevation={3} className="inventory-paper">
+            <Typography variant="h4" gutterBottom>
+                Inventory
+            </Typography>
+            <List>
+                {inventory.map((item) => {
+                    const category = categories.find((cat) => cat.id === item.categoryId);
+                    return (
+                        <div key={item.id} className="inventory-item">
+                            <ListItemText
+                                primary={item.name}
+                                secondary={`Category: ${category ? category.name : 'Unknown'}, Quantity: ${item.quantity}`}
+                            />
+                            <Button
+                              variant="outlined"
+                              color="error"
+                              onClick={() => {
+                                if (window.confirm(`Are you sure you want to delete ${item.name}?`)) {
+                                  deleteItem(item.id);
+                                }
+                              }}
+                            >
+                                Delete
+                            </Button>
+                        </div>
+                    );
+                })}
+            </List>
+        </Paper>
     );
 }
 

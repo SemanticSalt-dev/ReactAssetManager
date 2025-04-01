@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import NavBar from './components/NavBar';
 import InventoryView from './components/InventoryView';
 import AddItemForm from './components/AddItemForm';
@@ -49,27 +50,31 @@ function App() {
     toast.success('Item deleted successfully!')
   };
 
+  const theme = createTheme();
+
   return (
-    <Router>
-      <div className="App">
-        <NavBar />
-        <Routes>
-          <Route
-            path="/"
-            element={<InventoryView inventory={inventory} categories={categories} deleteItem={deleteItem} />}
-          />
-          <Route
-            path="/add-item"
-            element={<AddItemForm addItem={addItem} categories={categories} />}
-          />
-          <Route
-            path="/add-category"
-            element={<AddCategoryForm addCategory={addCategory} />}
-          />
-        </Routes>
-        <ToastContainer />
-      </div>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <div className="App">
+          <NavBar />
+          <Routes>
+            <Route
+              path="/"
+              element={<InventoryView inventory={inventory} categories={categories} deleteItem={deleteItem} />}
+            />
+            <Route
+              path="/add-item"
+              element={<AddItemForm addItem={addItem} categories={categories} />}
+            />
+            <Route
+              path="/add-category"
+              element={<AddCategoryForm addCategory={addCategory} />}
+            />
+          </Routes>
+          <ToastContainer />
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 

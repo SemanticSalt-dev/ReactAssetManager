@@ -1,48 +1,14 @@
-.add-item-form-container {
-    padding: 20px;
+.add-item-paper {
+    padding: 24px;
+    margin: 24px auto;
+    max-width: 400px;
 }
 
-.form-group {
-    margin-bottom: 16px;
+.add-item-form {
+    display: flex;
+    flex-direction: column;
 }
 
-.category-dropdown {
-    width: 320px;
-    padding: 10px;
-    font-size: 16px;
-    height: 40px;
-}
-
-.error-message {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="number"] {
-    font-size: 16px;
-    width: 300px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button[type="submit"] {
-    background-color: #0056b3;
-    font-size: 16px;
+.add-item-button {
+    margin-top: 16px;
 }
