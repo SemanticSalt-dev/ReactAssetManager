@@ -26,6 +26,9 @@ function NavBar() {
                 <Button color="inherit" component={Link} to="/add-category">
                     Add Category
                 </Button>
+                <Button color="inherit" component={Link} to="/manage-categories">
+                    Manage Categories
+                </Button>
             </Toolbar>
         </AppBar>
     );

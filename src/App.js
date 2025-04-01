@@ -8,6 +8,7 @@ import NavBar from './components/NavBar';
 import InventoryView from './components/InventoryView';
 import AddItemForm from './components/AddItemForm';
 import AddCategoryForm from './components/AddCategoryForm';
+import ManageCategories from './components/ManageCategories';
 import './App.css';
 
 
@@ -57,6 +58,16 @@ function App() {
     toast.success('Item updated successfully!');
   }
 
+  const deleteCategory = (categoryId) => {
+    const isCategoryInUse = inventory.some((item) => item.categoryId === categoryId);
+    if (isCategoryInUse) {
+      toast.error('Cannot delete category. It is currently in use by one or more items.');
+    } else {
+      setCategories(categories.filter((category) => category.id !== categoryId));
+      toast.success('Category deleted successfully!');
+    }
+  };
+
   const theme = createTheme();
 
   return (
@@ -77,6 +88,7 @@ function App() {
               path="/add-category"
               element={<AddCategoryForm addCategory={addCategory} />}
             />
+            <Route path="/manage-categories" element={<ManageCategories categories={categories} deleteCategory={deleteCategory} />} />
           </Routes>
           <ToastContainer />
         </div>
