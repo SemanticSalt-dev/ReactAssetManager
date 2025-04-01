@@ -78,47 +78,6 @@ function AddItemForm({ addItem, categories }) {
                 </Button>
             </form>
         </Paper>
-        // <div className="add-item-form-container">
-        //     <h2>Add Item</h2>
-        //     <form onSubmit={handleSubmit}>
-        //         <div className="form-group">
-        //             <label htmlFor="name">Name:</label>
-        //             <input
-        //               type="text"
-        //               id="name"
-        //               value={name}
-        //               onChange={(e) => setName(e.target.value)}
-        //             />
-        //             {errors.name && <p className="error-message">{errors.name}</p>}
-        //         </div>
-        //         <div className="form-group">
-        //             <label htmlFor="categoryId">Category:</label>
-        //             <select
-        //               id="categoryId"
-        //               value={categoryId}
-        //               onChange={(e) => setCategoryId(parseInt(e.target.value))}
-        //               className="category-dropdown"
-        //             >
-        //               {categories.map((category) => (
-        //                 <option key={category.id} value={category.id}>
-        //                     {category.name}
-        //                 </option>
-        //               ))}
-        //             </select>
-        //         </div>
-        //         <div className="form-group">
-        //             <label htmlFor="quantity">Quantity:</label>
-        //             <input
-        //               type="number"
-        //               id="quantity"
-        //               value={quantity}
-        //               onChange={(e) => setQuantity(parseInt(e.target.value))}
-        //             />
-        //             {errors.quantity && <p className="error-message">{errors.quantity}</p>}
-        //         </div>
-        //         <button type="submit" >Add Item</button>
-        //     </form>
-        // </div>
     );
 }
 
