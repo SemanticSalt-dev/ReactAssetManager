@@ -50,6 +50,13 @@ function App() {
     toast.success('Item deleted successfully!')
   };
 
+  const updateItem = (updatedItem) => {
+    setInventory(
+      inventory.map((item) => (item.id === updatedItem.id ? updatedItem :item))
+    );
+    toast.success('Item updated successfully!');
+  }
+
   const theme = createTheme();
 
   return (
@@ -60,7 +67,7 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<InventoryView inventory={inventory} categories={categories} deleteItem={deleteItem} />}
+              element={<InventoryView inventory={inventory} categories={categories} deleteItem={deleteItem} updateItem={updateItem} />}
             />
             <Route
               path="/add-item"
