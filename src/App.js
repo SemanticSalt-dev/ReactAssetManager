@@ -12,7 +12,6 @@ import ManageCategories from './components/ManageCategories';
 import './App.css';
 
 
-
 function App() {
   const [categories, setCategories] = useState(() => {
     const storedCategories = localStorage.getItem('categories');
@@ -48,7 +47,7 @@ function App() {
 
   const deleteItem = (itemId) => {
     setInventory(inventory.filter((item) => item.id !== itemId));
-    toast.success('Item deleted successfully!')
+    toast.success('Item deleted successfully!');
   };
 
   const updateItem = (updatedItem) => {
@@ -56,7 +55,7 @@ function App() {
       inventory.map((item) => (item.id === updatedItem.id ? updatedItem :item))
     );
     toast.success('Item updated successfully!');
-  }
+  };
 
   const deleteCategory = (categoryId) => {
     const isCategoryInUse = inventory.some((item) => item.categoryId === categoryId);
@@ -66,6 +65,15 @@ function App() {
       setCategories(categories.filter((category) => category.id !== categoryId));
       toast.success('Category deleted successfully!');
     }
+  };
+
+  const updateCategory = (updatedCategory) => {
+    setCategories(
+      categories.map((category) => 
+        category.id === updatedCategory.id ? updatedCategory : category
+      )
+    );
+    toast.success('Category updated successfully!');
   };
 
   const theme = createTheme();
@@ -88,7 +96,7 @@ function App() {
               path="/add-category"
               element={<AddCategoryForm addCategory={addCategory} />}
             />
-            <Route path="/manage-categories" element={<ManageCategories categories={categories} deleteCategory={deleteCategory} />} />
+            <Route path="/manage-categories" element={<ManageCategories categories={categories} deleteCategory={deleteCategory} updateCategory={updateCategory} />} />
           </Routes>
           <ToastContainer />
         </div>
