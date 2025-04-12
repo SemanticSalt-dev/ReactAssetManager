@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { List, ListItemText, Paper, Typography, Button, TextField, FormControl, InputLabel, Select, MenuItem, } from '@mui/material';
-import DeleteItem from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import EditItemForm from './EditItemForm';
 import './styles/InventoryView.css';
 
