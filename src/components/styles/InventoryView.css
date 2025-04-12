@@ -12,3 +12,9 @@
     border-bottom: 1px solid #eee;
     padding: 16px 0;
 }
+
+.inventory-filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}

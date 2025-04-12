@@ -44,7 +44,7 @@ function EditItemForm({ item, categories, updateItem, onCancel}) {
                   fullWidth
                   margin="normal"
                 />
-                <FormControl>
+                <FormControl fullWidth margin="normal">
                     <InputLabel id="category-label">Category</InputLabel>
                     <Select
                       labelId="category-label"
@@ -71,10 +71,12 @@ function EditItemForm({ item, categories, updateItem, onCancel}) {
                   margin="normal"
                   InputProps={{ inputProps: { min: 1 } }}
                 />
-                <Button onClick={onCancel}>Cancel</Button>
-                <Button type="submit" variant="contained" color="primary" className="add-item-button">
-                    Update Item
-                </Button>
+                <div>
+                    <Button onClick={onCancel}>Cancel</Button>
+                    <Button type="submit" variant="contained" color="primary" className="add-item-button">
+                        Update Item
+                    </Button>
+                </div>
             </form>
         </Paper>
     );
