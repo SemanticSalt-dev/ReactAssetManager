@@ -3,7 +3,7 @@ import { List, ListItem, ListItemText, IconButton, Paper, Typography, Button } f
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { TextField } from '@mui/material';
-import './styles/ManageCategories.css'
+import './styles/ManageCategories.css';
 
 function ManageCategories({ categories, deleteCategory, updateCategory }) {
     const [editCategoryId, setEditCategoryId] = useState(null);
@@ -20,11 +20,28 @@ function ManageCategories({ categories, deleteCategory, updateCategory }) {
     };
 
     const handleUpdateCategory = (id) => {
-        if (editedCategoryName.trim()) {
-            updateCategory({ id, name: editedCategoryName });
-            setEditCategoryId(null);
-            setEditedCategoryName('');
+        if (!editedCategoryName.trim()) {
+            return;
         }
+
+        if (editedCategoryName.trim().length > 50) {
+            return;
+        }
+
+        // Check for duplicate category names (case-insensitive, excluding current category)
+        const isDuplicate = categories.some(
+            category => 
+                category.id !== id && 
+                category.name.toLowerCase() === editedCategoryName.trim().toLowerCase()
+        );
+
+        if (isDuplicate) {
+            return;
+        }
+
+        updateCategory({ id, name: editedCategoryName.trim() });
+        setEditCategoryId(null);
+        setEditedCategoryName('');
     };
 
     const handleDeleteCategory = (id) => {
@@ -62,14 +79,14 @@ function ManageCategories({ categories, deleteCategory, updateCategory }) {
                                 <div>
                                     <IconButton
                                     edge="end"
-                                    aria-label="edit"
+                                    aria-label="editCategory"
                                     onClick={()=> handleEditClick(category.id, category.name)}
                                     >
                                         <EditIcon />
                                     </IconButton>
                                     <IconButton
                                     edge="end"
-                                    aria-label="delete"
+                                    aria-label="deleteCategory"
                                     onClick={() => handleDeleteCategory(category.id)}
                                     >
                                         <DeleteIcon />

@@ -10,28 +10,58 @@ import AddCategoryForm from './components/AddCategoryForm';
 import ManageCategories from './components/ManageCategories';
 import './App.css';
 
+// Configure future flags for React Router v7
+const router = {
+  future: {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true
+  }
+};
 
 function App() {
   const [categories, setCategories] = useState(() => {
-    const storedCategories = localStorage.getItem('categories');
-    return storedCategories ? JSON.parse(storedCategories) : [
-      { id: 1, name: 'Electronics' },
-      { id: 2, name:'Furniture' }
-    ];
+    try {
+      const storedCategories = localStorage.getItem('categories');
+      return storedCategories ? JSON.parse(storedCategories) : [
+        { id: 1, name: 'Electronics' },
+        { id: 2, name:'Furniture' }
+      ];
+    } catch (error) {
+      console.error('Error loading categories from localStorage:', error);
+      return [
+        { id: 1, name: 'Electronics' },
+        { id: 2, name:'Furniture' }
+      ];
+    }
   });
 
   const [inventory, setInventory] = useState(() => {
-    const storedInventory = localStorage.getItem('inventory');
-    return storedInventory ? JSON.parse(storedInventory) : [
-      { id: 1, name: 'Laptop', categoryId: 1, quantity: 1 },
-      { id: 2, name: 'Secretlab Titan Chair', categoryId: 2, quantity: 1 },
-      { id: 3, name: 'Adjustable Height Desk', categoryId: 2, quantity: 1 }
-    ];
+    try {
+      const storedInventory = localStorage.getItem('inventory');
+      return storedInventory ? JSON.parse(storedInventory) : [
+        { id: 1, name: 'Laptop', categoryId: 1, quantity: 1 },
+        { id: 2, name: 'Secretlab Titan Chair', categoryId: 2, quantity: 1 },
+        { id: 3, name: 'Adjustable Height Desk', categoryId: 2, quantity: 1 }
+      ];
+    } catch (error) {
+      console.error('Error loading inventory from localStorage:', error);
+      return [
+        { id: 1, name: 'Laptop', categoryId: 1, quantity: 1 },
+        { id: 2, name: 'Secretlab Titan Chair', categoryId: 2, quantity: 1 },
+        { id: 3, name: 'Adjustable Height Desk', categoryId: 2, quantity: 1 }
+      ];
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('inventory', JSON.stringify(inventory));
-    localStorage.setItem('categories', JSON.stringify(categories));
+    try {
+      localStorage.setItem('inventory', JSON.stringify(inventory));
+      localStorage.setItem('categories', JSON.stringify(categories));
+    } catch (error) {
+      console.error('Error saving data to localStorage:', error);
+      // Optionally show a toast notification to the user
+      toast.error('Failed to save data. Please check your browser settings.');
+    }
   }, [inventory, categories]);
 
   const addItem = (newItem) => {
@@ -79,7 +109,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
+      <Router future={router.future}>
         <div className="App">
           <NavBar />
           <Routes>
@@ -93,7 +123,7 @@ function App() {
             />
             <Route
               path="/add-category"
-              element={<AddCategoryForm addCategory={addCategory} />}
+              element={<AddCategoryForm addCategory={addCategory} categories={categories} />}
             />
             <Route path="/manage-categories" element={<ManageCategories categories={categories} deleteCategory={deleteCategory} updateCategory={updateCategory} />} />
           </Routes>

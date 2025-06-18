@@ -3,7 +3,7 @@ import { List, ListItemText, Paper, Typography, Button, TextField, FormControl, 
 import EditItemForm from './EditItemForm';
 import './styles/InventoryView.css';
 
-function InventoryView({ inventory, categories, deleteItem, updateItem }) {
+function InventoryView({ inventory = [], categories = [], deleteItem, updateItem }) {
     const [editItemId, setEditItemId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterCategory, setFilterCategory] = useState('all');
@@ -37,7 +37,7 @@ function InventoryView({ inventory, categories, deleteItem, updateItem }) {
             </Typography>
             <div className="inventory-filters">
                 <TextField 
-                  label="Search Terms"
+                  label="Search"
                   value={searchTerm}
                   onChange={handleSearchChange}
                   size="small"

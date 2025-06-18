@@ -14,10 +14,15 @@ function EditItemForm({ item, categories, updateItem, onCancel}) {
 
         if (!name.trim()) {
             validationErrors.name = 'Item name is required';
+        } else if (name.trim().length > 100) {
+            validationErrors.name = 'Item name must be 100 characters or less';
         }
 
-        if (quantity < 1) {
-            validationErrors.quantity = 'Quantity must be at least 1';
+        const quantityValue = parseInt(quantity);
+        if (isNaN(quantityValue) || quantityValue < 1) {
+            validationErrors.quantity = 'Quantity must be a valid number at least 1';
+        } else if (quantityValue > 999999) {
+            validationErrors.quantity = 'Quantity must be less than 1,000,000';
         }
 
         if (Object.keys(validationErrors).length > 0) {
@@ -25,21 +30,21 @@ function EditItemForm({ item, categories, updateItem, onCancel}) {
             return;
         }
 
-        updateItem({ id: item.id, name, categoryId, quantity });
+        updateItem({ id: item.id, name: name.trim(), categoryId, quantity: quantityValue });
         onCancel();
     };
 
     return (
         <Paper elevation={3} className="add-item-paper">
             <Typography variant="h5" gutterBottom>
-            Edit Item
+                Edit Item
             </Typography>
-            <form onSubmit={handleSubmit} className="add-item-form">
+            <form onSubmit={handleSubmit} className="add-item-form" role="form">
                 <TextField
-                  label="Name"
+                  label="Item Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  error={!!errors.name} // Convert error messages to boolean
+                  error={!!errors.name}
                   helperText={errors.name}
                   fullWidth
                   margin="normal"
@@ -50,7 +55,12 @@ function EditItemForm({ item, categories, updateItem, onCancel}) {
                       labelId="category-label"
                       id="categoryId"
                       value={categoryId}
-                      onChange={(e) => setCategoryId(parseInt(e.target.value))}
+                      onChange={(e) => {
+                        const parsedValue = parseInt(e.target.value);
+                        if (!isNaN(parsedValue)) {
+                          setCategoryId(parsedValue);
+                        }
+                      }}
                       label="Category"
                     >
                         {categories.map((category) => (
@@ -64,15 +74,22 @@ function EditItemForm({ item, categories, updateItem, onCancel}) {
                   label="Quantity"
                   type="number"
                   value={quantity}
-                  onChange={(e) => setQuantity(parseInt(e.target.value))}
-                  error={!!errors.quantity} // Convert error message to boolean
+                  onChange={(e) => setQuantity(e.target.value)}
+                  error={!!errors.quantity}
                   helperText={errors.quantity}
                   fullWidth
                   margin="normal"
                   InputProps={{ inputProps: { min: 1 } }}
                 />
                 <div>
-                    <Button onClick={onCancel}>Cancel</Button>
+                    <Button 
+                      onClick={onCancel} 
+                      variant="outlined" 
+                      color="secondary" 
+                      style={{ marginRight: '8px' }}
+                    >
+                        Cancel
+                    </Button>
                     <Button type="submit" variant="contained" color="primary" className="add-item-button">
                         Update Item
                     </Button>
