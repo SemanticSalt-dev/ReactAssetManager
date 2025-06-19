@@ -1,106 +1,195 @@
 # Inventory Management System
 
-This is a React based application for managing personal inventory. It allows users to add items and categories, and view/delete inventory. Future development includes database integration, user authentication, and enhanced search/filtering.
+A full-stack React application with PostgreSQL backend for managing inventory items and categories.
 
-This application was developed with a strong commitment to understanding each line of code. All code was hand-typed, and extensive research and questioning ensured complete comprehension.
+## Features
 
-## Table of Contents
+- ✅ Add, edit, and delete inventory items
+- ✅ Manage categories with validation
+- ✅ Search and filter functionality
+- ✅ Responsive Material-UI design
+- ✅ Comprehensive test coverage
+- ✅ PostgreSQL database backend
+- ✅ RESTful API
+- ✅ Error handling and validation
 
--   [Features](#features)
--   [Technologies Used](#technologies-used)
--   [Installation](#installation)
--   [Usage](#usage)
--   [Folder Structure](#folder-structure)
--   [Future Enhancements](#future-enhancements)
--   [Author](#author)
+## Tech Stack
 
-## Features <a name="features"></a>
+### Frontend
+- React 18
+- Material-UI (MUI)
+- React Router
+- React Toastify
+- Jest & Testing Library
 
--   Add and view inventory items.
--   Categorize items for better organization.
--   User-friendly interface with material-UI.
--   Form validation to ensure data integrity.
--   Local storage for data persistence.
--   Clear notifications for user feedback.
+### Backend
+- Node.js & Express
+- PostgreSQL
+- CORS & Helmet for security
+- Rate limiting
 
-## Technologies Used <a name="technologies-used"></a>
+## Setup Instructions
 
--  React
--  React Router DOM
--  Material UI (@mui/material)
--  React Toastify (for notifications)
--  JavaScript (ES6+)
--  CSS
+### Prerequisites
+- Node.js (v16 or higher)
+- PostgreSQL (v12 or higher)
+- npm or yarn
 
-## Installation <a name="installation"></a>
+### 1. Database Setup
 
-1.  Clone the repository.
+1. Install PostgreSQL and create a database:
+```sql
+CREATE DATABASE inventory_db;
+```
 
-    ```bash
-    git clone <your-repository-url>
-    ```
+2. Run the schema setup:
+```bash
+psql -d inventory_db -f server/database/schema.sql
+```
 
-2.  Navigate to the project directory.
+### 2. Backend Setup
 
-    ```bash
-    cd <your-project-directory>
-    ```
+1. Navigate to the server directory:
+```bash
+cd server
+```
 
-3.  Install Dependencies.
+2. Install dependencies:
+```bash
+npm install
+```
 
-    ```bash
-    npm install
-    ```
+3. Create environment file:
+```bash
+cp env.example .env
+```
 
-## Usage <a name="usage"></a>
+4. Update `.env` with your database credentials:
+```env
+DB_USER=your_username
+DB_HOST=localhost
+DB_NAME=inventory_db
+DB_PASSWORD=your_password
+DB_PORT=5432
+PORT=3001
+NODE_ENV=development
+CORS_ORIGIN=http://localhost:3000
+```
 
-1.  Start the development server.
+5. Start the backend server:
+```bash
+npm run dev
+```
 
-    ```bash
-    npm start
-    ```
+The API will be available at `http://localhost:3001/api`
 
-2.  Open your browser and navigate to `http://localhost:3000` (or the address shown in your terminal).
+### 3. Frontend Setup
 
--   **Adding Items:** Go to the "Add Item" page to add new inventory items.
--   **Adding Categories:** Go to the "Add Category" page to create new categories.
--   **Viewing Inventory:** The main page ("/") displays the current inventory.
--   **Deleting Items:** Click the "Delete" button next to an item to remove it.
+1. Install dependencies:
+```bash
+npm install
+```
 
-## Folder Structure <a name="folder-structure"></a>
+2. Create environment file:
+```bash
+cp env.example .env
+```
 
-src/
-├── components/
-│   ├── AddCategoryForm.js // Form for adding new categories.
-│   ├── AddItemForm.js    // Form for adding new inventory items.
-│   ├── InventoryView.js // Displays the list of inventory items.
-│   ├── NavBar.js       // Navigation bar component.
-│   └── styles/        // CSS styles for components.
-│       ├── AddCategoryForm.css
-│       ├── AddItemForm.css
-│       ├── InventoryView.css
-│       └── NavBar.css
-├── App.js      // Main application component with routing.
-├── index.js    // Entry point of the application.
-└── ... (other files)
+3. Start the development server:
+```bash
+npm start
+```
 
--   `components/`: Contains reusable React components.
--   `styles/`: Contains CSS files for component styling.
--   `App.js`: The main application component, sets up routing.
--   index.js: The entry point of the React application.
+The application will be available at `http://localhost:3000`
 
-## Future Enhancements <a name="future-enhancements"></a>
+## API Endpoints
 
--   Implement item editing functionality.
--   Add user authentication (e.g., Google Sign-In).
--   Implement filtering and searching of inventory.
--   Connect to a backend database (e.g., PostgreSQL).
--   Add more detailed item information (e.g., description, images).
--   Improve UI/UX with additional Material UI components.
--   Unit testing.
+### Categories
+- `GET /api/categories` - Get all categories
+- `POST /api/categories` - Create a new category
+- `PUT /api/categories/:id` - Update a category
+- `DELETE /api/categories/:id` - Delete a category
 
-## Author <a name="author"></a>
+### Inventory
+- `GET /api/inventory` - Get all inventory items
+- `POST /api/inventory` - Create a new inventory item
+- `PUT /api/inventory/:id` - Update an inventory item
+- `DELETE /api/inventory/:id` - Delete an inventory item
 
-Matthew Jenkins
-[Contact me via email](mailto:mjenkins87@live.com)
-[SemanticSalt-dev](https://github.com/SemanticSalt-dev)
+## Testing
+
+### Frontend Tests
+```bash
+npm test
+```
+
+### Backend Tests
+```bash
+cd server
+npm test
+```
+
+### Coverage Report
+```bash
+npm run test:coverage
+```
+
+## Database Schema
+
+### Categories Table
+- `id` (SERIAL PRIMARY KEY)
+- `name` (VARCHAR(50) UNIQUE)
+- `created_at` (TIMESTAMP)
+- `updated_at` (TIMESTAMP)
+
+### Inventory Items Table
+- `id` (SERIAL PRIMARY KEY)
+- `name` (VARCHAR(100))
+- `category_id` (INTEGER REFERENCES categories(id))
+- `quantity` (INTEGER CHECK > 0)
+- `created_at` (TIMESTAMP)
+- `updated_at` (TIMESTAMP)
+
+## Migration from localStorage
+
+This application has been migrated from localStorage to PostgreSQL:
+
+### Benefits
+- **Data Persistence**: Data survives browser restarts
+- **Multi-user Support**: Multiple users can access the same data
+- **Data Integrity**: Foreign key constraints prevent orphaned records
+- **Scalability**: Can handle much larger datasets
+- **Backup & Recovery**: Database backups and point-in-time recovery
+- **Advanced Queries**: Complex reporting and analytics capabilities
+
+### Changes Made
+1. **API Service Layer**: Created `src/services/api.js` for API communication
+2. **Async State Management**: Updated App component to handle async operations
+3. **Error Handling**: Added comprehensive error handling for API calls
+4. **Loading States**: Added loading indicators for better UX
+5. **Backend API**: Full RESTful API with PostgreSQL integration
+6. **Security**: Added CORS, rate limiting, and input validation
+
+## Deployment
+
+### Backend Deployment
+1. Set up a PostgreSQL database (e.g., AWS RDS, Heroku Postgres)
+2. Configure environment variables
+3. Deploy to your preferred platform (Heroku, AWS, DigitalOcean)
+
+### Frontend Deployment
+1. Build the application: `npm run build`
+2. Deploy the `build` folder to your hosting service
+3. Configure the API URL for production
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## License
+
+MIT License

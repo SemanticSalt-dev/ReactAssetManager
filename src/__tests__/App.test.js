@@ -1,74 +1,71 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { renderWithTheme } from '../testUtils';
 import App from '../App';
+import { apiService } from '../services/api';
 
-// Mock localStorage
-const mockLocalStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn()
-};
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+// Mock the API service
+jest.mock('../services/api');
 
 // Mock window.confirm
 window.confirm = jest.fn();
 
 describe('App', () => {
   beforeEach(() => {
-    mockLocalStorage.getItem.mockClear();
-    mockLocalStorage.setItem.mockClear();
-    mockLocalStorage.clear();
+    jest.clearAllMocks();
     window.confirm.mockClear();
     
-    // Reset to default behavior
-    mockLocalStorage.getItem.mockReturnValue(null);
+    // Default mock responses
+    apiService.getCategories.mockResolvedValue([
+      { id: 1, name: 'Electronics' },
+      { id: 2, name: 'Furniture' }
+    ]);
+    
+    apiService.getInventory.mockResolvedValue([
+      { id: 1, name: 'Laptop', categoryId: 1, quantity: 1, category_name: 'Electronics' },
+      { id: 2, name: 'Secretlab Titan Chair', categoryId: 2, quantity: 1, category_name: 'Furniture' },
+      { id: 3, name: 'Adjustable Height Desk', categoryId: 2, quantity: 1, category_name: 'Furniture' }
+    ]);
   });
 
-  test('renders with default data when no localStorage data exists', () => {
-    mockLocalStorage.getItem.mockReturnValue(null);
+  test('renders with data from API', async () => {
     renderWithTheme(<App />);
 
-    expect(screen.getByText('Laptop')).toBeInTheDocument();
-    expect(screen.getByText('Secretlab Titan Chair')).toBeInTheDocument();
-    expect(screen.getByText('Adjustable Height Desk')).toBeInTheDocument();
-    expect(screen.getAllByText(/Category: Electronics, Quantity: \d+/)[0]).toBeInTheDocument();
-    expect(screen.getAllByText(/Category: Furniture, Quantity: \d+/)[0]).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Laptop')).toBeInTheDocument();
+      expect(screen.getByText('Secretlab Titan Chair')).toBeInTheDocument();
+      expect(screen.getByText('Adjustable Height Desk')).toBeInTheDocument();
+    });
   });
 
-  test('loads data from localStorage when available', async () => {
+  test('loads data from API when available', async () => {
     const mockInventory = [
-      { id: 1, name: 'Test Item', categoryId: 1, quantity: 1 }
+      { id: 1, name: 'Test Item', categoryId: 1, quantity: 1, category_name: 'Test Category' }
     ];
     const mockCategories = [
       { id: 1, name: 'Test Category' }
     ];
 
-    // Clear any previous mock setup
-    mockLocalStorage.getItem.mockClear();
-    
-    // Set up the mock to return our test data for specific keys
-    mockLocalStorage.getItem.mockImplementation((key) => {
-      if (key === 'inventory') {
-        return JSON.stringify(mockInventory);
-      }
-      if (key === 'categories') {
-        return JSON.stringify(mockCategories);
-      }
-      return null;
-    });
+    apiService.getInventory.mockResolvedValue(mockInventory);
+    apiService.getCategories.mockResolvedValue(mockCategories);
 
     renderWithTheme(<App />);
 
-    // The component should immediately show the data from localStorage
-    expect(screen.getByText('Test Item')).toBeInTheDocument();
-    expect(screen.getByText(/Category: Test Category, Quantity: \d+/)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Test Item')).toBeInTheDocument();
+      expect(screen.getByText(/Category: Test Category, Quantity: \d+/)).toBeInTheDocument();
+    });
   });
 
-  test('saves data to localStorage when inventory changes', async () => {
-    mockLocalStorage.getItem.mockReturnValue(null);
+  test('adds item via API', async () => {
+    const newItem = { id: 4, name: 'New Item', categoryId: 1, quantity: 5, category_name: 'Electronics' };
+    apiService.createItem.mockResolvedValue(newItem);
+
     renderWithTheme(<App />);
 
-    // Navigate to add item page
+    await waitFor(() => {
+      expect(screen.getByText('Laptop')).toBeInTheDocument();
+    });
+
     fireEvent.click(screen.getByRole('link', { name: 'Add Item' }));
 
     const nameInput = screen.getByLabelText('Item Name');
@@ -85,18 +82,24 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /add item/i }));
 
     await waitFor(() => {
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        'inventory',
-        expect.stringContaining('New Item')
-      );
+      expect(apiService.createItem).toHaveBeenCalledWith({
+        name: 'New Item',
+        categoryId: 1,
+        quantity: 5
+      });
     });
   });
 
-  test('saves data to localStorage when categories change', async () => {
-    mockLocalStorage.getItem.mockReturnValue(null);
+  test('adds category via API', async () => {
+    const newCategory = { id: 3, name: 'New Category' };
+    apiService.createCategory.mockResolvedValue(newCategory);
+
     renderWithTheme(<App />);
 
-    // Navigate to add category page
+    await waitFor(() => {
+      expect(screen.getByText('Laptop')).toBeInTheDocument();
+    });
+
     fireEvent.click(screen.getByRole('link', { name: 'Add Category' }));
 
     const categoryInput = screen.getByLabelText('Category Name');
@@ -104,33 +107,39 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /add category/i }));
 
     await waitFor(() => {
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        'categories',
-        expect.stringContaining('New Category')
-      );
+      expect(apiService.createCategory).toHaveBeenCalledWith({
+        name: 'New Category'
+      });
     });
   });
 
   test('prevents deletion of category in use', async () => {
-    mockLocalStorage.getItem.mockReturnValue(null);
+    apiService.deleteCategory.mockRejectedValue(new Error('Cannot delete category. It is currently in use by one or more items.'));
+
     renderWithTheme(<App />);
 
-    // Navigate to manage categories page by clicking the navigation link
+    await waitFor(() => {
+      expect(screen.getByText('Laptop')).toBeInTheDocument();
+    });
+
     fireEvent.click(screen.getByRole('link', { name: 'Manage Categories' }));
 
     const deleteButtons = screen.getAllByRole('button', { name: /delete/i });
     fireEvent.click(deleteButtons[0]);
 
-    // The toast message should appear, but since we're not testing toast functionality directly,
-    // we'll just verify the category is still there (not deleted)
     await waitFor(() => {
       expect(screen.getByText('Electronics')).toBeInTheDocument();
     });
   });
 
   test('allows deletion of unused category', async () => {
-    mockLocalStorage.getItem.mockReturnValue(null);
+    apiService.deleteCategory.mockResolvedValue({ message: 'Category deleted successfully' });
+
     renderWithTheme(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Laptop')).toBeInTheDocument();
+    });
 
     // First add a new category
     fireEvent.click(screen.getByRole('link', { name: 'Add Category' }));
@@ -146,15 +155,20 @@ describe('App', () => {
     fireEvent.click(deleteButtons[deleteButtons.length - 1]);
 
     await waitFor(() => {
-      expect(screen.queryByText('Unused Category')).not.toBeInTheDocument();
+      expect(apiService.deleteCategory).toHaveBeenCalled();
     });
   });
 
   test('updates item successfully', async () => {
-    mockLocalStorage.getItem.mockReturnValue(null);
+    const updatedItem = { id: 1, name: 'Updated Item', categoryId: 1, quantity: 10, category_name: 'Electronics' };
+    apiService.updateItem.mockResolvedValue(updatedItem);
+
     renderWithTheme(<App />);
 
-    // Make sure we're on the inventory page
+    await waitFor(() => {
+      expect(screen.getByText('Laptop')).toBeInTheDocument();
+    });
+
     fireEvent.click(screen.getByRole('link', { name: 'Inventory' }));
 
     const editButtons = screen.getAllByRole('button', { name: /edit/i });
@@ -168,15 +182,25 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /update/i }));
 
     await waitFor(() => {
-      expect(screen.getByText('Updated Item')).toBeInTheDocument();
+      expect(apiService.updateItem).toHaveBeenCalledWith(1, {
+        id: 1,
+        name: 'Updated Item',
+        categoryId: 1,
+        quantity: 10
+      });
     });
   });
 
   test('updates category successfully', async () => {
-    mockLocalStorage.getItem.mockReturnValue(null);
+    const updatedCategory = { id: 1, name: 'Updated Category' };
+    apiService.updateCategory.mockResolvedValue(updatedCategory);
+
     renderWithTheme(<App />);
 
-    // Navigate to manage categories page by clicking the navigation link
+    await waitFor(() => {
+      expect(screen.getByText('Laptop')).toBeInTheDocument();
+    });
+
     fireEvent.click(screen.getByRole('link', { name: 'Manage Categories' }));
 
     const editButtons = screen.getAllByRole('button', { name: /edit/i });
@@ -187,41 +211,40 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /update/i }));
 
     await waitFor(() => {
-      expect(screen.getByText('Updated Category')).toBeInTheDocument();
+      expect(apiService.updateCategory).toHaveBeenCalledWith(1, {
+        id: 1,
+        name: 'Updated Category'
+      });
     });
   });
 
-  // Test localStorage errors
-  test('handles localStorage errors gracefully', () => {
-    mockLocalStorage.getItem.mockImplementation(() => {
-      throw new Error('localStorage error');
-    });
-    
-    renderWithTheme(<App />);
-    
-    // Navigate to inventory page to see the fallback data
-    fireEvent.click(screen.getByRole('link', { name: 'Inventory' }));
-    
-    // Should fall back to default data - check for default inventory items
-    expect(screen.getByText('Laptop')).toBeInTheDocument();
-    expect(screen.getByText('Secretlab Titan Chair')).toBeInTheDocument();
-    expect(screen.getByText('Adjustable Height Desk')).toBeInTheDocument();
-  });
+  test('handles API errors gracefully', async () => {
+    apiService.getCategories.mockRejectedValue(new Error('API error'));
+    apiService.getInventory.mockRejectedValue(new Error('API error'));
 
-  test('handles localStorage setItem errors', async () => {
-    mockLocalStorage.setItem.mockImplementation(() => {
-      throw new Error('localStorage write error');
-    });
-    
     renderWithTheme(<App />);
-    // Should show toast error - check for the error message in the toast
+
     await waitFor(() => {
-      expect(screen.getByText('Failed to save data. Please check your browser settings.')).toBeInTheDocument();
+      expect(screen.getByText('Error: API error')).toBeInTheDocument();
     });
   });
 
-  test('has proper ARIA labels and roles', () => {
+  test('shows loading state', () => {
+    // Don't resolve the promises immediately to test loading state
+    apiService.getCategories.mockImplementation(() => new Promise(() => {}));
+    apiService.getInventory.mockImplementation(() => new Promise(() => {}));
+
     renderWithTheme(<App />);
+
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+
+  test('has proper ARIA labels and roles', async () => {
+    renderWithTheme(<App />);
+    
+    await waitFor(() => {
+      expect(screen.getByText('Laptop')).toBeInTheDocument();
+    });
     
     // Check for proper navigation elements
     expect(screen.getByRole('banner')).toBeInTheDocument(); // AppBar has banner role
